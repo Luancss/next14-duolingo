@@ -1,6 +1,7 @@
 "use client";
 
 import { courses } from "@/db/schema";
+import Card from "./card";
 
 type Props = {
   courses: (typeof courses.$inferSelect)[];
@@ -19,7 +20,6 @@ export const List = ({courses, activeCourseId}: Props) => {
           active={course.id === activeCourseId}
           onClick={() => {}}
           disabled={false}
-          active={course.id === activeCourseId}
         />
       ))}
     </div>
