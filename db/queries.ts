@@ -14,15 +14,15 @@ export const getUserProgress = cache(async () => {
   const data = await db.query.userProgress.findFirst({
     where: eq(userProgress.userId, userId),
     with: {
-      acticeCourse: true,
-    }
-  })
+      activeCourse: true,
+    },
+  });
 
   return data;
-})
+});
 
 export const getCourses = cache(async () => {
   const data = await db.query.courses.findMany();
 
   return data;
-})
+});
