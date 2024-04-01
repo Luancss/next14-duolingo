@@ -8,7 +8,7 @@ type Props = {
   imageSrc: string;
   active?: boolean;
   disabled?: boolean;
-  onClick: () => void;
+  onClick: (id: number) => void;
 }
 
 const Card = ({
@@ -21,7 +21,7 @@ const Card = ({
 }: Props) => {
   return (
     <div
-      onClick={() => onClick()}
+      onClick={() => onClick(id)}
       className={cn(
         "h-full border-2 rounded-xl border-b-4 hover:bg-black/5 cursor-pointer active:border-b-2 flex flex-col items-center justify-between p-3 pb-6 min-h-[217px] min-w-[200px]",
         disabled && "cursor-events-none opacity-50",

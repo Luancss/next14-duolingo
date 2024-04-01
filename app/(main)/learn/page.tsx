@@ -13,12 +13,12 @@ const LearnPage = async () => {
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
   }
-
+  
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
         <UserProgress
-          activeCourse={{ title: "Spanish", imageSrc: "/es.svg" }}
+          activeCourse={userProgress.activeCourse}
           hearts={5}
           points={100}
           hasActiveSubscription={false}
