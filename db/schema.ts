@@ -107,4 +107,3 @@ export const userProgressRelations = relations(userProgress, ({ one }) => ({
     references: [courses.id],
   }),
 }));
-
