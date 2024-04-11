@@ -51,8 +51,37 @@ const main = async () => {
         description: "Learn the basics of spanish",
         order: 1,
       }
-    ])
+    ]);
+
+    await db.insert(schema.lessons).values([
+      {
+        id: 1,
+        unitId: 1,
+        order: 1,
+        title: "Nouns",
+      }
+    ]);
+
+    await db.insert(schema.challenges).values([
+      {
+        id: 1,
+        lessonId: 1,
+        type: "SELECT",
+        order: 1,
+        question: 'Which one of these is the "the man"?',
+      }
+    ]);
       
+    await db.insert(schema.challengeOptions).values([
+      {
+        id: 1,
+        challengeId: 1,
+        imageSrc: "/man.svg",
+        correct: true,
+        text: "El hombre",
+        audioSrc: "/es_man.mp3",
+      }
+    ]);
 
     console.log("Seeding finished");
   } catch (error) {
