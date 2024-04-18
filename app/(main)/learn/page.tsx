@@ -4,6 +4,7 @@ import { Header } from "./header";
 import { UserProgress } from "@/components/user-progress";
 import { getUnits, getUserProgress } from "@/db/queries";
 import { redirect } from "next/navigation";
+import { Unit } from "./unit";
 
 const LearnPage = async () => {
   const userProgressData = getUserProgress();
@@ -35,7 +36,7 @@ const LearnPage = async () => {
               description={unit.description}
               title={unit.title}
               lessons={unit.lessons}
-              activeLesson={null}
+              activeLesson={undefined}
               activeLessonPercentage={0}
             />
           </div>

@@ -1,4 +1,5 @@
 import { lessons, units } from "@/db/schema";
+import { UnitBanner } from "./unit-banner";
 
 type Props = {
   id: number;
@@ -11,13 +12,21 @@ type Props = {
   activeLesson: typeof lessons.$inferSelect & {
     unit: typeof units.$inferSelect;
   } | undefined;
-  activeLessonpercentage: number;
+  activeLessonPercentage: number;
 };
 
-export const Unit = ({}: Props) => {
+export const Unit = ({
+  id,
+  order,
+  title,
+  description,
+  lessons,
+  activeLesson,
+  activeLessonPercentage,
+}: Props) => {
   return (
-    <div>
-      
-    </div>
+    <>
+      <UnitBanner title={title} description={description} />
+    </>
   )
 }
