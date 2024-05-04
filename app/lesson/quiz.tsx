@@ -1,6 +1,8 @@
 'use client'
 
 import { challengeOptions, challenges } from "@/db/schema";
+import { useState } from "react";
+import { Header } from "./header";
 
 type Props = {
   initialPercentage: number;
@@ -20,8 +22,17 @@ export const Quiz = ({
   initialLessonChallenges,
   userSubscription
 }: Props) => {
+  const [hearts, setHearts] = useState(initialHearts);
+  const [percentage, setPercentage] = useState(initialPercentage);
+
   return (
-    <div>Quiz</div>
+    <>
+      <Header
+        hearts={hearts}
+        percentage={percentage}
+        hasActiveSubscription={!!userSubscription?.isActive}
+      />
+    </>
   )
 }
 
