@@ -1,5 +1,6 @@
 import { getLesson, getUserProgress } from "@/db/queries";
 import { redirect } from "next/navigation";
+import {Quiz} from "./quiz";
 
 
 const LessonPage = async () => {
@@ -25,9 +26,9 @@ const LessonPage = async () => {
     <Quiz
       initialLessonId={lesson.id}
       initialLessonChallenges={lesson.challenges}
-      initlHearts={userProgress.hearts}
+      initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
-      userSubscription={undefined}
+      userSubscription={null}
     />  
   );
 };
