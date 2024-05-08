@@ -1,6 +1,8 @@
 import { challenges } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import {useAudio, useKey} from "react-use";
+import { useCallback } from "react";
 
 type Props = {
   id: number;
@@ -27,9 +29,20 @@ export const Card = ({
   disabled,
   type
 }: Props) => {
+  const [audio, _, controls] = useAudio({src: audioSrc || ""});
+
+  const handleClick = useCallback(() => {
+    if (disabled) return;
+
+    controls.play();
+    onClick();
+  }, [disabled, onClick, controls]);
+  
+  useKey(shortcut, handleClick, {}, [handleClick]);
+
   return (
     <div
-      onClick={() => {}}
+      onClick={handleClick}
       className={cn(
         "h-full border-2 rounded-xl border-b-4 hover:bg-black/5 p-4 lg:p-6 cursor-pointer active:border-b-2",
         selected && "border-skye-300 bg-skye-100 hover:bg-skye-100",
@@ -37,10 +50,11 @@ export const Card = ({
           && "border-green-300 bg-green-100 hover:bg-green-100",
         selected && status === "wrong" 
           && "border-rose-300 bg-rose-100 hover:bg-rose-100",
-        disabled && "pointer-events-none hover:bg:white",
+        disabled && "pointer-events-none hover:bg-white",
         type === "ASSIST" && "lg:p-3 w-full",
       )}
     >
+      {audio}
       {imageSrc && (
         <div className="relative aspect-square mb-4 max-h-[90px] lg:max-h-[150x] w-full">
           <Image
@@ -57,7 +71,7 @@ export const Card = ({
       )}>
         {type === "ASSIST" && <div />}
         <p className={cn(
-          "textr-neutral-600 text-sm lg:text-base",
+          "text-neutral-600 text-sm lg:text-base",
           selected && "text-skye-500",
           selected && status === "correct" && "text-green-500",
           selected && status === "wrong" && "text-rose-500",
@@ -65,8 +79,8 @@ export const Card = ({
           {text}
         </p>
         <div className={cn(
-          "lg:w[30px] lg:w-[30[px] w-[20px] h-[20px] border-2 flex items-center justify-center rounded-lg text-neutral-400 lg:text-[150x] text-xs font-semibold",
-          selected && "border-skye-500 text-skye-500",
+          "lg:w-[30px] lg:h-[30px] w-[20px] h-[20px] border-2 flex items-center justify-center rounded-lg text-neutral-400 lg:text-[15px] text-xs font-semibold",
+          selected && "border-skye-300 text-skye-500",
           selected && status === "correct" && "border-green-500 text-green-500",
           selected && status === "wrong" && "border-rose-500 text-rose-500",
         )}>
