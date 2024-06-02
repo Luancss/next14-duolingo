@@ -1,98 +1,97 @@
-import { challenges } from "@/db/schema";
-import { cn } from "@/lib/utils";
+import {challenges} from "@/db/schema";
+import {cn} from "@/lib/utils";
 import Image from "next/image";
-import { useAudio, useKey } from "react-use";
-import { useCallback } from "react";
-import { Footer } from "./footer";
+import {useCallback} from "react";
+import {useAudio, useKey} from "react-use";
 
 type Props = {
   id: number;
   imageSrc: string | null;
   audioSrc: string | null;
   text: string;
-  shortcut: string;
+  shortCut: string;
   selected?: boolean;
   onClick: () => void;
   disabled?: boolean;
-  status: "correct" | "wrong" | "none";
-  type: (typeof challenges.$inferSelect)["type"];
+  status?: "correct" | "wrong" | "none";
+  type: typeof challenges.$inferInsert.type;
 };
 
-export const Card = ({
+function Card({
+  audioSrc,
   id,
   imageSrc,
-  audioSrc,
-  text,
-  shortcut,
-  selected,
   onClick,
-  status,
-  disabled,
+  shortCut,
+  text,
   type,
-}: Props) => {
-  const [audio, _, controls] = useAudio({ src: audioSrc || "" });
-
+  disabled,
+  selected,
+  status,
+}: Props) {
+  const [audio, _, controls] = useAudio({
+    src: audioSrc as string,
+  });
   const handleClick = useCallback(() => {
     if (disabled) return;
-
     controls.play();
     onClick();
   }, [disabled, onClick, controls]);
-
-  useKey(shortcut, handleClick, {}, [handleClick]);
-
+  useKey(shortCut, handleClick, {}, [handleClick]);
   return (
+    <div
+      onClick={handleClick}
+      className={cn(
+        "h-full border-2 rounded-xl border-b-4 hover:bg-black/5 p-4 lg:p-6 cursor-pointer active:border-b-2",
+        selected && "border-sky-300 bg-sky-100 hover:bg-sky-100",
+        selected &&
+          status === "correct" &&
+          "border-green-300 bg-green-100 hover:bg-green-100",
+        selected &&
+          status === "wrong" &&
+          "border-rose-300 bg-rose-100 hover:bg-rose-100",
+        disabled && "pointer-events-none hover:bg-white",
+        type === "ASSIST" && "lg:p-3 w-full"
+      )}
+    >
+      {audio}
+      {imageSrc && (
+        <div className="relative aspect-square mb-4 max-h-[80px] lg:max-h-[150px] w-full">
+          <Image src={imageSrc} alt={text} fill />
+        </div>
+      )}
       <div
-        onClick={handleClick}
         className={cn(
-          "h-full border-2 rounded-xl border-b-4 hover:bg-black/5 p-4 lg:p-6 cursor-pointer active:border-b-2",
-          selected && "border-skye-300 bg-skye-100 hover:bg-skye-100",
-          selected &&
-            status === "correct" &&
-            "border-green-300 bg-green-100 hover:bg-green-100",
-          selected &&
-            status === "wrong" &&
-            "border-rose-300 bg-rose-100 hover:bg-rose-100",
-          disabled && "pointer-events-none hover:bg-white",
-          type === "ASSIST" && "lg:p-3 w-full"
+          `flex items-center justify-between`,
+          type === "ASSIST" && "flex-row-reverse"
         )}
       >
-        {audio}
-        {imageSrc && (
-          <div className="relative aspect-square mb-4 max-h-[90px] lg:max-h-[150x] w-full">
-            <Image width={150} height={150} src={imageSrc} alt={text} />
-          </div>
-        )}
-        <div
+        {type === "ASSIST" && <div />}
+        <p
           className={cn(
-            "flex items-center justify-between",
-            type === "ASSIST" && "flex-row-reverse"
+            `text-neutral-600 text-sm lg:text-base`,
+            selected && "text-sky-500 ",
+            selected && status === "correct" && "text-green-500",
+            status === "wrong" && "text-rose-500"
           )}
         >
-          {type === "ASSIST" && <div />}
-          <p
-            className={cn(
-              "text-neutral-600 text-sm lg:text-base",
-              selected && "text-skye-500",
-              selected && status === "correct" && "text-green-500",
-              selected && status === "wrong" && "text-rose-500"
-            )}
-          >
-            {text}
-          </p>
-          <div
-            className={cn(
-              "lg:w-[30px] lg:h-[30px] w-[20px] h-[20px] border-2 flex items-center justify-center rounded-lg text-neutral-400 lg:text-[15px] text-xs font-semibold",
-              selected && "border-skye-300 text-skye-500",
-              selected &&
-                status === "correct" &&
-                "border-green-500 text-green-500",
-              selected && status === "wrong" && "border-rose-500 text-rose-500"
-            )}
-          >
-            {shortcut}
-          </div>
+          {text}
+        </p>
+        <div
+          className={cn(
+            "lg:w-[30px] lg:h-[30px] w-[20px] h-[20px] border-2 flex items-center justify-center rounded-lg text-neutral-400 lg:text-[15px] text-xs font-semibold",
+            selected && " border-sky-300 text-sky-500",
+            selected &&
+              status === "correct" &&
+              "border-green-500 text-green-500",
+            status === "wrong" && "border-rose-500 text-rose-500"
+          )}
+        >
+          {shortCut}
         </div>
       </div>
+    </div>
   );
-};
+}
+
+export default Card;

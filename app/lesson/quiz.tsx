@@ -4,10 +4,10 @@ import { challengeOptions, challenges } from "@/db/schema";
 import { useState, useTransition } from "react";
 import { Header } from "./header";
 import { QuestionBubble } from "./question-bubble";
-import { Challenge } from "./challenge";
-import { Footer } from "./footer";
 import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { toast } from "sonner";
+import Footer from "./footer";
+import Challenge from "./challenge";
 
 type Props = {
   initialPercentage: number;
@@ -17,7 +17,6 @@ type Props = {
     completed: boolean;
     challengeOptions: typeof challengeOptions.$inferSelect[];
   })[];
-  userSubscription: any;
 }
 
 export const Quiz = ({
@@ -25,7 +24,6 @@ export const Quiz = ({
   initialHearts,
   initialLessonId,
   initialLessonChallenges,
-  userSubscription
 }: Props) => {
   const [pending, startTransition] = useTransition();
 
@@ -98,16 +96,16 @@ export const Quiz = ({
     }
   };
 
-  const title = challenge.type === "ASSIST"
+  const title = challenge?.type === "ASSIST"
    ? "Select the corret meaning"
-   : challenge.question
+   : challenge?.question;
 
   return (
     <>
       <Header
         hearts={hearts}
         percentage={percentage}
-        hasActiveSubscription={!!userSubscription?.isActive}
+        hasActiveSubscription={false}
       />
       <div className="flex-1">
         <div className="h-full flex items-center justify-center">
