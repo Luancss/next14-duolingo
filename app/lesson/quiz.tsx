@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { challengeOptions, challenges } from "@/db/schema";
 import { useState, useTransition } from "react";
@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Footer from "./footer";
 import Challenge from "./challenge";
 import { reduceHearts } from "@/actions/user-progress";
+import { useAudio } from "react-use";
 
 type Props = {
   initialPercentage: number;
@@ -16,9 +17,9 @@ type Props = {
   initialLessonId: number;
   initialLessonChallenges: (typeof challenges.$inferSelect & {
     completed: boolean;
-    challengeOptions: typeof challengeOptions.$inferSelect[];
+    challengeOptions: (typeof challengeOptions.$inferSelect)[];
   })[];
-}
+};
 
 export const Quiz = ({
   initialPercentage,
@@ -26,13 +27,18 @@ export const Quiz = ({
   initialLessonId,
   initialLessonChallenges,
 }: Props) => {
+  const [correctAudio, _c, correctControls] = useAudio({ src: "/correct.wav" });
+  const [incorrectAudio, _i, incorrectControls] = useAudio({ src: "/incorrect.wav" });
+  
   const [pending, startTransition] = useTransition();
 
   const [hearts, setHearts] = useState(initialHearts);
   const [percentage, setPercentage] = useState(initialPercentage);
   const [challenges] = useState(initialLessonChallenges);
   const [activeIndex, setActiveIndex] = useState(() => {
-    const uncompletedIndex = challenges.findIndex((challenge) => !challenge.completed);
+    const uncompletedIndex = challenges.findIndex(
+      (challenge) => !challenge.completed
+    );
     return uncompletedIndex === -1 ? 0 : uncompletedIndex;
   });
 
@@ -50,7 +56,7 @@ export const Quiz = ({
     if (status !== "none") return;
 
     setSelectedOption(id);
-  }
+  };
 
   const onContinue = () => {
     if (!selectedOption) return;
@@ -83,6 +89,7 @@ export const Quiz = ({
               return;
             }
 
+            correctControls.play();
             setStatus("correct");
             setPercentage((prev) => prev + 100 / challenges.length);
 
@@ -90,8 +97,8 @@ export const Quiz = ({
               setHearts((prev) => Math.min(prev + 1, 5));
             }
           })
-          .catch(() => toast.error("Something went wrong"))
-      })
+          .catch(() => toast.error("Something went wrong"));
+      });
     } else {
       startTransition(() => {
         reduceHearts(challenge.id)
@@ -101,23 +108,35 @@ export const Quiz = ({
               return;
             }
 
+            incorrectControls.play();
             setStatus("wrong");
 
             if (!response?.error) {
               setHearts((prev) => Math.max(prev - 1, 0));
             }
           })
-          .catch(() => toast.error("Something went wrong. Please try again."))
-      }) 
+          .catch(() => toast.error("Something went wrong. Please try again."));
+      });
     }
   };
 
-  const title = challenge?.type === "ASSIST"
-   ? "Select the corret meaning"
-   : challenge?.question;
+  if (!challenge) {
+    return (
+      <div>
+        Finished the challenge!
+      </div>
+    );
+  }
+
+  const title =
+    challenge?.type === "ASSIST"
+      ? "Select the corret meaning"
+      : challenge?.question;
 
   return (
     <>
+    {incorrectAudio}
+    {correctAudio}
       <Header
         hearts={hearts}
         percentage={percentage}
@@ -131,7 +150,7 @@ export const Quiz = ({
             </h1>
             <div>
               {challenge.type === "ASSIST" && (
-                <QuestionBubble question={challenge.question}/>
+                <QuestionBubble question={challenge.question} />
               )}
               <Challenge
                 options={options}
@@ -145,12 +164,11 @@ export const Quiz = ({
           </div>
         </div>
       </div>
-      <Footer 
+      <Footer
         disabled={pending || !selectedOption}
         status={status}
         onCheck={onContinue}
       />
     </>
-  )
-}
-
+  );
+};
