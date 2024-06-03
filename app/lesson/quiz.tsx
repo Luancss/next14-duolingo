@@ -11,6 +11,7 @@ import Challenge from "./challenge";
 import { reduceHearts } from "@/actions/user-progress";
 import { useAudio } from "react-use";
 import Image from "next/image";
+import { ResultCard } from "./result-card";
 
 type Props = {
   initialPercentage: number;
@@ -33,6 +34,7 @@ export const Quiz = ({
   
   const [pending, startTransition] = useTransition();
 
+  const [lessonId, setLessonId] = useState(initialLessonId);
   const [hearts, setHearts] = useState(initialHearts);
   const [percentage, setPercentage] = useState(initialPercentage);
   const [challenges] = useState(initialLessonChallenges);
@@ -148,8 +150,17 @@ export const Quiz = ({
               variant="points"
               value={challenges.length * 10}
             />
+            <ResultCard
+              variant="hearts"
+              value={hearts}
+            />
           </div>
         </div>
+        <Footer
+          lessonId={lessonId}
+          status="completed"
+          onCheck={() => {}}
+        />
       </>
     );
   }

@@ -7,10 +7,10 @@ type Props = {
   onCheck: () => void;
   status: "correct" | "wrong" | "none" | "completed";
   disabled?: boolean;
-  lessonID?: number;
+  lessonId?: number;
 };
 
-function Footer({onCheck, status, disabled, lessonID}: Props) {
+function Footer({onCheck, status, disabled, lessonId}: Props) {
   const isMobile = useMedia("(max-width: 1024px)");
   useKey("Enter", onCheck, {}, [onCheck]);
   return (
@@ -38,7 +38,7 @@ function Footer({onCheck, status, disabled, lessonID}: Props) {
           <Button
             variant="default"
             size={isMobile ? "sm" : "lg"}
-            onClick={() => (window.location.href = `/lesson/${lessonID}`)}
+            onClick={() => (window.location.href = `/lesson/${lessonId}`)}
           >
             Practice again
           </Button>
