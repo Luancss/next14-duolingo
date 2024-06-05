@@ -2,7 +2,7 @@ import { FeedWrapper } from "@/components/feed-wrapper";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { Header } from "./header";
 import { UserProgress } from "@/components/user-progress";
-import { getCourseProgress, getLessonsPercentsage, getUnits, getUserProgress } from "@/db/queries";
+import { getCourseProgress, getLessonPercentage, getUnits, getUserProgress } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { Unit } from "./unit";
 import { lessons, units as unitsSchema } from "@/db/schema";
@@ -10,7 +10,7 @@ import { lessons, units as unitsSchema } from "@/db/schema";
 const LearnPage = async () => {
   const userProgressData = getUserProgress();
   const courseProgressData = getCourseProgress();
-  const lessonsPercentageData = getLessonsPercentsage();
+  const lessonsPercentageData = getLessonPercentage();
   const unitsData = getUnits();
 
   const [userProgress, units, courseProgress, lessonPercentage ] = await Promise.all([

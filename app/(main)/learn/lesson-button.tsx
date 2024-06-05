@@ -33,9 +33,9 @@ export const LessonButton = ({
 
   if (cycleIndex <= 2) {
     identationLevel = cycleIndex;
-  } else if (cycleIndex < 4) {
+  } else if (cycleIndex <= 4) {
     identationLevel = 4 - cycleIndex;
-  } else if (cycleIndex < 6) {
+  } else if (cycleIndex <= 6) {
     identationLevel = 4 - cycleIndex;
   } else {
     identationLevel = cycleIndex - 8;
