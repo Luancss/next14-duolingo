@@ -5,6 +5,7 @@ import { getUserProgress } from "@/db/queries";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
+import { Items } from "./items";
 
 const ShopPage = async () => {
   const userProgressData = getUserProgress();
@@ -37,7 +38,11 @@ const ShopPage = async () => {
           <p className="text-muted-foreground text-center text-lg mb-6">
             Spend your points on cool stuff.
           </p>
-          <Items/>
+          <Items
+            hearts={userProgress.hearts}
+            points={userProgress.points}
+            hasActiveSubscription={false}
+          />
         </div>
       </FeedWrapper>
     </div>
