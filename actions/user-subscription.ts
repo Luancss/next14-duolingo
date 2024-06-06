@@ -17,9 +17,9 @@ export const createStripeUrl = async () => {
   const userSubscription = await getUserSubscription();
 
   // redirect user to customer portal who already have a subscription
-  if (userSubscription && userSubscription.stripeCostumerId) {
+  if (userSubscription && userSubscription.stripeCustomerId) {
     const stripeSession = await stripe.billingPortal.sessions.create({
-      customer: userSubscription.stripeCostumerId,
+      customer: userSubscription.stripeCustomerId,
       return_url: returnUrl,
     });
 

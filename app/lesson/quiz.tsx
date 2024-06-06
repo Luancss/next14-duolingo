@@ -1,6 +1,6 @@
 "use client";
 
-import { challengeOptions, challenges } from "@/db/schema";
+import { challengeOptions, challenges, userSubscription } from "@/db/schema";
 import { useState, useTransition } from "react";
 import { Header } from "./header";
 import { QuestionBubble } from "./question-bubble";
@@ -25,6 +25,11 @@ type Props = {
     completed: boolean;
     challengeOptions: (typeof challengeOptions.$inferSelect)[];
   })[];
+  userSubscription:
+  | (typeof userSubscription.$inferSelect & {
+      isActive: boolean;
+    })
+  | null;
 };
 
 export const Quiz = ({
@@ -32,6 +37,7 @@ export const Quiz = ({
   initialHearts,
   initialLessonId,
   initialLessonChallenges,
+  userSubscription
 }: Props) => {
   const {open: openHeartsModal} = useHeartsModal();
   const {open: openPracticeModal} = usePracticeModal();
@@ -184,7 +190,7 @@ export const Quiz = ({
             />
             <ResultCard
               variant="hearts"
-              value={hearts}
+              value={userSubscription?.isActive ? Infinity : hearts}
             />
           </div>
         </div>
@@ -209,7 +215,7 @@ export const Quiz = ({
       <Header
         hearts={hearts}
         percentage={percentage}
-        hasActiveSubscription={false}
+        hasActiveSubscription={!!userSubscription?.isActive}
       />
       <div className="flex-1">
         <div className="h-full flex items-center justify-center">
