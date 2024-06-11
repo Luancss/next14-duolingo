@@ -6,7 +6,7 @@ type Props = {
   id: number;
   title: string;
   imageSrc: string;
-  active?: boolean;
+  isActive?: boolean;
   disabled?: boolean;
   onClick: (id: number) => void;
 }
@@ -15,7 +15,7 @@ const Card = ({
   id,
   title,
   imageSrc,
-  active,
+  isActive,
   onClick,
   disabled,
 }: Props) => {
@@ -28,7 +28,7 @@ const Card = ({
       )}
     >
       <div className="min-h-[24px] w-full flex items-center justify-end">
-        {active && (
+        {isActive && (
           <div className="rounded-md bg-green-600 flex items-center justify-center p-1.5">
             <Check className="text-white stroke-[4] w-4 h-4"/>
           </div>

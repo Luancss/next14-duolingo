@@ -43,8 +43,8 @@ export const getUnits = cache(async () => {
   if (!userId || !userProgress?.activeCourseId) return [];
 
   const data = await db.query.units.findMany({
-    orderBy: (units, { asc }) => [asc(units.order)],
     where: eq(units.courseId, userProgress.activeCourseId),
+    orderBy: (units, { asc }) => [asc(units.order)],
     with: {
       lessons: {
         orderBy: (lessons, { asc }) => [asc(lessons.order)],
@@ -227,7 +227,7 @@ export const getUserSubscription = cache(async () => {
 });
 
 export const getTopTenUsers = cache(async () => {
-  const { userId } = await auth();
+  const { userId } = auth();
 
   if (!userId) return [];
 

@@ -1,25 +1,25 @@
-import {challengeOptions, challenges} from "@/db/schema";
-import {cn} from "@/lib/utils";
-import React from "react";
-import Card from "./card";
+import { challengeOptions, challenges } from "@/db/schema";
+import { cn } from "@/lib/utils";
 
-type Props = {
+import { Card } from "./card";
+
+type ChallengeProps = {
   options: (typeof challengeOptions.$inferSelect)[];
   onSelect: (id: number) => void;
   status: "correct" | "wrong" | "none";
   selectedOption?: number;
   disabled?: boolean;
-  type: typeof challenges.$inferSelect.type;
+  type: (typeof challenges.$inferSelect)["type"];
 };
 
-function Challenge({
-  onSelect,
+export const Challenge = ({
   options,
+  onSelect,
   status,
-  type,
-  disabled,
   selectedOption,
-}: Props) {
+  disabled,
+  type,
+}: ChallengeProps) => {
   return (
     <div
       className={cn(
@@ -29,13 +29,13 @@ function Challenge({
           "grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))]"
       )}
     >
-      {options.map((option, idx) => (
+      {options.map((option, i) => (
         <Card
           key={option.id}
           id={option.id}
           text={option.text}
           imageSrc={option.imageSrc}
-          shortCut={`${idx + 1}`}
+          shortcut={`${i + 1}`}
           selected={selectedOption === option.id}
           onClick={() => onSelect(option.id)}
           status={status}
@@ -46,6 +46,4 @@ function Challenge({
       ))}
     </div>
   );
-}
-
-export default Challenge;
+};

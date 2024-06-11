@@ -27,15 +27,14 @@ export async function POST(req: NextRequest) {
 
   const session = event.data.object as Stripe.Checkout.Session;
 
-  // // user subscription completed
+  // user subscription completed
   if (event.type === "checkout.session.completed") {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
     );
 
-    if (!session?.metadata?.userId) {
-      return new NextResponse("User ID is required.", { status: 400 });
-    }
+    if (!session?.metadata?.userId)
+      return new NextResponse("User id is required.", { status: 400 });
 
     await db.insert(userSubscription).values({
       userId: session.metadata.userId,
