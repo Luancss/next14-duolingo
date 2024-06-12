@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 
 import db from "@/db/drizzle";
-import { units } from "@/db/schema";
+import { lessons } from "@/db/schema";
 import { isAdmin } from "@/lib/admin";
 
 export const GET = async () => {
   if (!isAdmin()) {
     return NextResponse.json("Unauthorized", { status: 401 });
   }
-  const data = await db.query.units.findMany();
+  const data = await db.query.lessons.findMany();
 
   return NextResponse.json(data);
 }
@@ -19,7 +19,7 @@ export const POST = async (req: Request) => {
   }
 
   const body = await req.json();
-  const data = await db.insert(units).values({
+  const data = await db.insert(lessons).values({
     ...body,
   }).returning();
 
