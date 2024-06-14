@@ -12,7 +12,7 @@ export const GET = async (
     return NextResponse.json("Unauthorized", { status: 403 });
   }
 
-  const data = await db.query.challenges.findFirst({
+  const data = await db.query.challengeOptions.findFirst({
     where: eq(challengeOptions.id, params.challengeOptionId),
   });
 
